@@ -59,7 +59,7 @@
 
 - name: Copy INIT script to server for RHEL
   template: src="../templates/rabbitmq_exporter.sysvinit.{{ ansible_os_family|lower }}.sh.j2"  dest="/etc/init.d/rabbitmq_exporter"  mode="a+x"
-  when: ansible_distribution == "RedHat" and use_systemd is not defined
+  when: ansible_distribution == "RedHat" and not use_systemd|bool 
 
 - name: set rabbmitmq_exporter status and start (if not already)
   service:
