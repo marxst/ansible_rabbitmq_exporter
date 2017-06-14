@@ -9,6 +9,11 @@
     use_systemd: false
   when: (ansible_distribution == "Ubuntu" and ansible_distribution_version|int < 16) and use_systemd is not defined
   
+  - name: use systemv-init for RHEL6
+  set_fact:
+    use_systemd: false
+  when: (ansible_distribution == "RedHat" and ansible_distribution_version|int < 7) and use_systemd is not defined
+  
 - name: ensure install directory exists
   file:
     path: '{{ rabbitmq_exporter_install_dir }}'
