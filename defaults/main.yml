@@ -32,3 +32,7 @@ rabbitmq_exporter_port: '9090'
 
 rabbitmq_exporter_output_format: 'TTY'
 rabbitmq_exporter_log_level: 'info'
+
+prometheus_install_path:  /opt/prometheus
+prometheus_log_path:      /var/log/prometheus
+prometheus_pid_path:      /var/run/prometheus

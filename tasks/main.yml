@@ -8,7 +8,7 @@
   set_fact:
     use_systemd: false
   when: (ansible_distribution == "Ubuntu" and ansible_distribution_version|int < 16) and use_systemd is not defined
-
+  
 - name: ensure install directory exists
   file:
     path: '{{ rabbitmq_exporter_install_dir }}'
@@ -48,7 +48,11 @@
   template:
     src: "templates/init_upstart.conf"
     dest: "/etc/init/rabbitmq_exporter.conf"
-  when: not use_systemd|bool
+  when: (ansible_distribution == "Ubuntu" and ansible_distribution_version|int < 16) and use_systemd is not defined
+
+- name: Copy INIT script to server for RHEL
+  template: src="../templates/rabbitmq_exporter.sysvinit.{{ ansible_os_family|lower }}.sh.j2"  dest="/etc/init.d/rabbitmq_exporter"  mode="a+x"
+  when: ansible_distribution == "RedHat" and use_systemd is not defined
 
 - name: set rabbmitmq_exporter status and start (if not already)
   service:
