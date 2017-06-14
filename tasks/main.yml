@@ -19,6 +19,8 @@
   get_url:
     url: '{{ base_download_url}}/v{{ rabbitmq_exporter_version }}/rabbitmq_exporter-{{ rabbitmq_exporter_version }}.linux-amd64.tar.gz'
     dest: '{{ rabbitmq_exporter_tmp_dir }}/rabbitmq_exporter-{{ rabbitmq_exporter_version }}.linux-amd64.tar.gz'
+    use_proxy: yes
+    validate_certs: no
 
 - name: extract rabbitmq_exporter to install directory
   unarchive:
@@ -42,7 +44,7 @@
   template:
     src: "templates/init_systemd.service"
     dest: "/lib/systemd/system/rabbitmq_exporter.service"
-  when: use_systemd
+  when: use_systemd|bool
 
 - name: copy upstart config to server
   template:
